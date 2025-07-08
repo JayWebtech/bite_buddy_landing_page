@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BiteBuddy - Turn Healthy Eating Into an Epic Adventure</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#FF9F00",
+              secondary: "#FFF5E1",
+              dark: "#121212",
+              accent: "#6B4BFF",
+              cyan: "#00F0FF",
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :where([class^="ri-"])::before {
+        content: "\f3c2";
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      @font-face {
+        font-family: "BlockBlueprint";
+        src: url("path/to/BlockBlueprint.woff2") format("woff2");
+      }
+      body {
+        background-color: #121212;
+        color: #fff5e1;
+        font-family: "BlockBlueprint", sans-serif;
+      }
+      .gradient-text {
+        background: linear-gradient(135deg, #ff9f00, #fff5e1);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .glow {
+        filter: drop-shadow(0 0 8px rgba(255, 159, 0, 0.3));
+      }
+      .floating {
+        animation: float 3s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .slide-in {
+        opacity: 0;
+        transform: translateX(-20px);
+        animation: slideIn 0.8s ease-out forwards;
+      }
+      @keyframes slideIn {
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .scale-in {
+        opacity: 0;
+        transform: scale(0.95);
+        animation: scaleIn 0.8s ease-out forwards;
+      }
+      @keyframes scaleIn {
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .stagger-animation > * {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      .stagger-animation > *:nth-child(1) {
+        animation: fadeIn 0.5s ease-out 0.1s forwards;
+      }
+      .stagger-animation > *:nth-child(2) {
+        animation: fadeIn 0.5s ease-out 0.2s forwards;
+      }
+      .stagger-animation > *:nth-child(3) {
+        animation: fadeIn 0.5s ease-out 0.3s forwards;
+      }
+      .stagger-animation > *:nth-child(4) {
+        animation: fadeIn 0.5s ease-out 0.4s forwards;
+      }
+      .hover-scale {
+        transition: transform 0.3s ease;
+      }
+      .hover-scale:hover {
+        transform: scale(1.05);
+      }
+      .hero-grid {
+        background-image: 
+          linear-gradient(rgba(255, 159, 0, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 159, 0, 0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <header
+      class="fixed top-0 w-full z-50 bg-dark/90 backdrop-blur-sm border-b border-primary/10"
+    >
+      <nav
+        class="container mx-auto px-4 md:px-16 py-4 flex items-center justify-between"
+      >
+        <div class="text-3xl gradient-text">BiteBuddy</div>
+        <div class="hidden md:flex items-center gap-8">
+          <a
+            href="#about"
+            class="nav-link text-secondary/80 hover:text-secondary transition-colors"
+            >About</a
+          >
+          <a
+            href="#features"
+            class="nav-link text-secondary/80 hover:text-secondary transition-colors"
+            >Features</a
+          >
+          <a
+            href="#how-it-works"
+            class="nav-link text-secondary/80 hover:text-secondary transition-colors"
+            >How It Works</a
+          >
+          <a
+            href="#roadmap"
+            class="nav-link text-secondary/80 hover:text-secondary transition-colors"
+            >Roadmap</a
+          >
+          <a
+            href="#waitlist"
+            class="nav-link bg-primary text-dark px-6 py-2 !rounded-button font-bold hover:opacity-90 transition-opacity"
+          >
+            Join Waitlist
+          </a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <section class="relative min-h-screen flex items-center pt-20 hero-grid">
+        <div class="absolute inset-0 overflow-hidden">
+          <div
+            class="grid grid-cols-12 grid-rows-12 gap-6 w-full h-full opacity-3"
+          >
+            <div class="col-span-1 row-span-1 bg-primary/20 rounded"></div>
+            <div class="col-span-2 row-span-2 bg-primary/15 rounded"></div>
+            <div class="col-span-1 row-span-3 bg-primary/25 rounded"></div>
+            <div class="col-span-3 row-span-1 bg-primary/10 rounded"></div>
+            <div class="col-span-2 row-span-2 bg-primary/18 rounded"></div>
+            <div class="col-span-1 row-span-1 bg-primary/12 rounded"></div>
+          </div>
+        </div>
+        <div class="container mx-auto px-4 md:px-16 relative z-10">
+          <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8 fade-in">
+              <h1 class="text-4xl md:text-6xl font-bold leading-tight gradient-text">
+                Turn Healthy Eating Into an Epic Adventure
+              </h1>
+              <p class="text-xl text-secondary/80">
+                Feed, Battle & Evolve Your Digital Pet NFT. Join the revolution
+                of gamified nutrition where every meal counts!
+              </p>
+              <div class="flex flex-wrap gap-4">
+                <a
+                  href="#waitlist"
+                  class="nav-link bg-primary text-dark px-8 py-3 !rounded-button font-bold hover:opacity-90 transition-opacity text-lg inline-block"
+                >
+                  Join Waitlist
+                </a>
+                <a
+                  href="https://youtu.be/VgF6AGPciWI"
+                  target="_blank"
+                  class="border-2 border-primary text-primary px-8 py-3 !rounded-button font-bold hover:bg-primary/10 transition-colors text-lg inline-flex items-center gap-2"
+                >
+                  Watch Demo <i class="ri-play-circle-line"></i>
+                </a>
+              </div>
+            </div>
+            <div class="relative max-w-lg mx-auto">
+              <!-- Mobile Game Frame -->
+              <div class="relative bg-gradient-to-b from-orange-900 via-orange-800 to-orange-900 rounded-3xl overflow-hidden border-4 border-primary/30 shadow-2xl">
+                <!-- Status Bar -->
+                <div class="flex justify-between items-center p-3 text-secondary/80 text-sm">
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold">Level 7</span>
+                    <div class="text-xs opacity-60">HP: 100/100</div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <i class="ri-wifi-line"></i>
+                    <i class="ri-battery-2-line"></i>
+                  </div>
+                </div>
+                
+                <!-- Game Environment -->
+                <div class="relative h-64 bg-gradient-to-b from-primary/40 to-orange-900 overflow-hidden">
+                  <!-- Background Elements -->
+                  <div class="absolute inset-0">
+                    <!-- Floating Platforms -->
+                    <div class="absolute top-8 left-6 w-12 h-3 bg-primary/40 rounded-full"></div>
+                    <div class="absolute top-12 right-8 w-16 h-3 bg-primary/40 rounded-full"></div>
+                    <div class="absolute bottom-16 left-3 w-18 h-4 bg-primary/40 rounded-full"></div>
+                    <div class="absolute bottom-20 right-6 w-14 h-3 bg-primary/40 rounded-full"></div>
+                    
+                    <!-- Floating Stars -->
+                    <div class="absolute top-10 left-16 text-primary floating">⭐</div>
+                    <div class="absolute top-6 right-12 text-primary floating" style="animation-delay: 0.5s;">⭐</div>
+                    <div class="absolute bottom-24 left-8 text-primary floating" style="animation-delay: 1s;">⭐</div>
+                  </div>
+                  
+                  <!-- Pet Character -->
+                  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <div class="relative w-24 h-28 floating">
+                      <!-- Tiger Body -->
+                      <div class="relative w-20 h-24 bg-gradient-to-br from-orange-400 via-orange-500 to-red-500 rounded-xl mx-auto">
+                        <!-- Tiger Stripes -->
+                        <div class="absolute inset-1 bg-gradient-to-br from-red-600 to-red-700 rounded-lg opacity-60"></div>
+                        <div class="absolute top-3 left-1 w-0.5 h-4 bg-red-700 rounded transform rotate-12"></div>
+                        <div class="absolute top-4 right-2 w-0.5 h-5 bg-red-700 rounded transform -rotate-12"></div>
+                        <div class="absolute bottom-6 left-2 w-0.5 h-4 bg-red-700 rounded transform rotate-45"></div>
+                        
+                        <!-- Face -->
+                        <div class="absolute top-1 left-1/2 transform -translate-x-1/2 w-16 h-12 bg-orange-300 rounded-lg">
+                          <!-- Eyes -->
+                          <div class="absolute top-2 left-2 w-2 h-2 bg-black rounded-full">
+                            <div class="absolute top-0.5 left-0.5 w-1 h-1 bg-white rounded-full"></div>
+                          </div>
+                          <div class="absolute top-2 right-2 w-2 h-2 bg-black rounded-full">
+                            <div class="absolute top-0.5 left-0.5 w-1 h-1 bg-white rounded-full"></div>
+                          </div>
+                          
+                          <!-- Mouth -->
+                          <div class="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-1.5 bg-red-600 rounded-full"></div>
+                        </div>
+                        
+                        <!-- Ears -->
+                        <div class="absolute -top-1 left-2 w-3 h-3 bg-orange-500 rounded-full"></div>
+                        <div class="absolute -top-1 right-2 w-3 h-3 bg-orange-500 rounded-full"></div>
+                        
+                        <!-- Arms -->
+                        <div class="absolute top-8 -left-1 w-4 h-6 bg-orange-400 rounded-lg"></div>
+                        <div class="absolute top-8 -right-1 w-4 h-6 bg-orange-400 rounded-lg"></div>
+                      </div>
+                      
+                      <!-- Interactive Areas -->
+                      <div class="absolute top-2 -left-4 bg-secondary/90 text-xs px-1.5 py-0.5 rounded-full text-dark font-bold animate-pulse">Pet</div>
+                      <div class="absolute top-4 -right-6 bg-secondary/90 text-xs px-1.5 py-0.5 rounded-full text-dark font-bold animate-pulse" style="animation-delay: 0.5s;">Tickle</div>
+                      <div class="absolute bottom-0 -left-3 bg-secondary/90 text-xs px-1.5 py-0.5 rounded-full text-dark font-bold animate-pulse" style="animation-delay: 1s;">Feed</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Pet Info -->
+                <div class="text-center py-3 bg-orange-900/50">
+                  <h3 class="text-lg font-bold text-secondary mb-1">Balance Thunder</h3>
+                  <p class="text-sm text-secondary/70">Tap different areas to interact!</p>
+                </div>
+                
+                <!-- Stats Bars -->
+                <div class="px-4 py-2 space-y-2 bg-orange-900/80">
+                  <!-- Health -->
+                  <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2">
+                      <div class="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                        <span class="text-white text-xs">❤️</span>
+                      </div>
+                      <span class="text-secondary font-bold text-sm">Health</span>
+                    </div>
+                    <div class="flex-1">
+                      <div class="h-2 bg-dark/60 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-primary to-red-500 rounded-full" style="width: 100%"></div>
+                      </div>
+                    </div>
+                    <span class="text-secondary text-sm font-bold">100/100</span>
+                  </div>
+                  
+                  <!-- Energy -->
+                  <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2">
+                      <div class="w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center">
+                        <span class="text-white text-xs">⚡</span>
+                      </div>
+                      <span class="text-secondary font-bold text-sm">Energy</span>
+                    </div>
+                    <div class="flex-1">
+                      <div class="h-2 bg-dark/60 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-yellow-400 to-primary rounded-full" style="width: 50%"></div>
+                      </div>
+                    </div>
+                    <span class="text-secondary text-sm font-bold">50/100</span>
+                  </div>
+                  
+                  <!-- Nutrition -->
+                  <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2">
+                      <div class="w-5 h-5 bg-accent rounded-full flex items-center justify-center">
+                        <span class="text-white text-xs">🍎</span>
+                      </div>
+                      <span class="text-secondary font-bold text-sm">Nutrition</span>
+                    </div>
+                    <div class="flex-1">
+                      <div class="h-2 bg-dark/60 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-accent to-cyan rounded-full" style="width: 0%"></div>
+                      </div>
+                    </div>
+                    <span class="text-secondary text-sm font-bold">0/100</span>
+                  </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="p-3 grid grid-cols-2 gap-3 bg-orange-900">
+                  <button class="bg-gradient-to-r from-primary to-orange-500 text-dark font-bold py-2 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                    SCAN MEAL
+                  </button>
+                  <button class="bg-gradient-to-r from-green-400 to-green-500 text-white font-bold py-2 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                    GO TO BATTLE
+                  </button>
+                </div>
+                
+                <!-- Bottom Navigation -->
+                <div class="flex justify-around items-center py-2 bg-orange-950 border-t border-primary/30">
+                  <div class="flex flex-col items-center gap-0.5">
+                    <div class="w-7 h-7 bg-primary rounded-lg flex items-center justify-center">
+                      <i class="ri-heart-line text-dark"></i>
+                    </div>
+                    <span class="text-secondary text-xs">My Pet</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-0.5">
+                    <div class="w-7 h-7 bg-gray-600 rounded-lg flex items-center justify-center">
+                      <i class="ri-archive-line text-white"></i>
+                    </div>
+                    <span class="text-gray-400 text-xs">Items</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-0.5">
+                    <div class="w-7 h-7 bg-gray-600 rounded-lg flex items-center justify-center">
+                      <i class="ri-qr-scan-line text-white"></i>
+                    </div>
+                    <span class="text-gray-400 text-xs">Scan</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-0.5">
+                    <div class="w-7 h-7 bg-gray-600 rounded-lg flex items-center justify-center">
+                      <i class="ri-notification-line text-white"></i>
+                    </div>
+                    <span class="text-gray-400 text-xs">Alerts</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-0.5">
+                    <div class="w-7 h-7 bg-gray-600 rounded-lg flex items-center justify-center">
+                      <i class="ri-user-line text-white"></i>
+                    </div>
+                    <span class="text-gray-400 text-xs">Profile</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="py-20 bg-dark" id="features">
+        <div class="container mx-auto px-4 md:px-16">
+          <h2 class="text-4xl font-bold text-center gradient-text mb-16">
+            Game Features
+          </h2>
+          <div class="grid md:grid-cols-3 gap-8 stagger-animation">
+            <div
+              class="bg-dark/50 p-8 rounded-2xl border border-primary/10 hover:border-primary/30 transition-colors hover-scale"
+            >
+              <div
+                class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-xl mb-6"
+              >
+                <i class="ri-scan-2-line text-2xl text-primary"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-secondary mb-4">
+                Scan & Feed
+              </h3>
+              <p class="text-secondary/70">
+                Scan your meals to feed your digital pet. Our AI analyzes
+                nutrients instantly.
+              </p>
+            </div>
+            <div
+              class="bg-dark/50 p-8 rounded-2xl border border-primary/10 hover:border-primary/30 transition-colors"
+            >
+              <div
+                class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-xl mb-6"
+              >
+                <i class="ri-nft-line text-2xl text-primary"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-secondary mb-4">
+                NFT Collection
+              </h3>
+              <p class="text-secondary/70">
+                Every meal becomes a unique NFT. Build your collection and trade
+                with others.
+              </p>
+            </div>
+            <div
+              class="bg-dark/50 p-8 rounded-2xl border border-primary/10 hover:border-primary/30 transition-colors"
+            >
+              <div
+                class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-xl mb-6"
+              >
+                <i class="ri-sword-line text-2xl text-primary"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-secondary mb-4">
+                Pet Battles
+              </h3>
+              <p class="text-secondary/70">
+                Challenge other players' pets in epic battles. Win rewards and
+                climb the leaderboard.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="py-20 bg-dark" id="about">
+        <div class="container mx-auto px-4 md:px-16">
+          <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6 fade-in">
+              <h2 class="text-4xl font-bold gradient-text mb-8">
+                About BiteBuddy
+              </h2>
+              <p class="text-xl text-secondary/80 leading-relaxed">
+                BiteBuddy is a revolutionary NFT game that transforms your daily
+                meals into an exciting adventure. By combining blockchain
+                technology with AI-powered nutrition tracking, we're making
+                healthy eating fun and rewarding.
+              </p>
+              <p class="text-xl text-secondary/80 leading-relaxed">
+                Your digital pet grows and evolves based on your real-world
+                eating habits. Each meal you scan becomes a unique NFT,
+                contributing to your pet's strength and abilities. Battle other
+                players, collect rare NFTs, and join a community of
+                health-conscious gamers.
+              </p>
+            </div>
+            <div class="relative floating">
+              <img
+                src="https://static.readdy.ai/image/582c2bee2dff7c2bd32ae5c4a059f532/5b3138996d58a72521507dc2ae4978e4.jfif"
+                alt="BiteBuddy Game Interface"
+                class="w-full max-w-xs mx-auto rounded-2xl shadow-xl glow"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="py-20 bg-gradient-to-b from-dark to-dark/90" id="roadmap">
+        <div class="container mx-auto px-4 md:px-16">
+          <h2 class="text-4xl font-bold text-center gradient-text mb-16">
+            Roadmap
+          </h2>
+          <div class="relative">
+            <div
+              class="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-primary/20"
+            ></div>
+            <div class="space-y-24 relative">
+              <div class="grid md:grid-cols-2 gap-2 md:gap-8 items-center">
+                <div class="md:text-right md:pr-12 fade-in">
+                  <div
+                    class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full mb-4"
+                  >
+                    Q3 2025
+                  </div>
+                  <h3 class="text-2xl font-bold text-secondary mb-4">
+                    Phase 1: Foundation & MVP
+                  </h3>
+                  <ul class="space-y-2 text-secondary/70">
+                    <li>Core pet feeding mechanics</li>
+                    <li>Basic AI food recognition system</li>
+                    <li>Simple NFT minting for meals</li>
+                    <li>Web app beta launch</li>
+                    <li>Community building & Discord</li>
+                    <li>Beta user testing program</li>
+                  </ul>
+                </div>
+                <div class="pl-0 md:pl-12"></div>
+              </div>
+              <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="md:text-right md:pr-12"></div>
+                <div class="md:pl-12 fade-in">
+                  <div
+                    class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full mb-4"
+                  >
+                    Q4 2025
+                  </div>
+                  <h3 class="text-2xl font-bold text-secondary mb-4">
+                    Phase 2: Launch & Growth
+                  </h3>
+                  <ul class="space-y-2 text-secondary/70">
+                    <li>Pet battle system implementation</li>
+                    <li>Mobile app (iOS/Android) release</li>
+                    <li>NFT marketplace integration</li>
+                    <li>Leaderboard & ranking system</li>
+                    <li>Referral program launch</li>
+                    <li>Public launch & marketing</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        class="py-20 bg-gradient-to-b from-dark to-dark/90"
+        id="how-it-works"
+      >
+        <div class="container mx-auto px-4 md:px-16">
+          <h2 class="text-4xl font-bold text-center gradient-text mb-16">
+            How It Works
+          </h2>
+          <div class="grid md:grid-cols-4 gap-8 stagger-animation">
+            <div class="text-center space-y-4 hover-scale">
+              <div
+                class="w-20 h-20 mx-auto flex items-center justify-center bg-primary/10 rounded-full"
+              >
+                <i class="ri-camera-3-line text-3xl text-primary"></i>
+              </div>
+              <h3 class="text-xl font-bold text-secondary">Scan Meal</h3>
+              <p class="text-secondary/70">Take a photo of your meal</p>
+            </div>
+            <div class="text-center space-y-4">
+              <div
+                class="w-20 h-20 mx-auto flex items-center justify-center bg-primary/10 rounded-full"
+              >
+                <i class="ri-ai-generate-line text-3xl text-primary"></i>
+              </div>
+              <h3 class="text-xl font-bold text-secondary">AI Analysis</h3>
+              <p class="text-secondary/70">Get instant nutrient breakdown</p>
+            </div>
+            <div class="text-center space-y-4">
+              <div
+                class="w-20 h-20 mx-auto flex items-center justify-center bg-primary/10 rounded-full"
+              >
+                <i class="ri-heart-line text-3xl text-primary"></i>
+              </div>
+              <h3 class="text-xl font-bold text-secondary">Feed Pet</h3>
+              <p class="text-secondary/70">Watch your pet grow stronger</p>
+            </div>
+            <div class="text-center space-y-4">
+              <div
+                class="w-20 h-20 mx-auto flex items-center justify-center bg-primary/10 rounded-full"
+              >
+                <i class="ri-trophy-line text-3xl text-primary"></i>
+              </div>
+              <h3 class="text-xl font-bold text-secondary">Battle & Win</h3>
+              <p class="text-secondary/70">Compete and earn rewards</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="py-20 bg-dark" id="waitlist">
+        <div class="container mx-auto px-4 md:px-16 text-center">
+          <h2 class="text-4xl font-bold gradient-text mb-8">
+            Join the Waitlist
+          </h2>
+          <p class="text-xl text-secondary/80 mb-12 max-w-2xl mx-auto">
+            Be among the first to experience BiteBuddy. Get early access and
+            exclusive rewards when we launch.
+          </p>
+          <form class="max-w-md mx-auto flex gap-4">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              class="flex-1 px-6 py-3 bg-dark border border-primary/30 !rounded-button text-secondary focus:border-primary outline-none"
+            />
+            <button
+              type="submit"
+              class="whitespace-nowrap bg-primary text-dark px-6 py-3 !rounded-button font-bold hover:opacity-90 transition-opacity"
+            >
+              Join Now
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+    <footer class="bg-dark border-t border-primary/10 py-12">
+      <div class="container mx-auto px-4 md:px-16">
+        <div class="grid md:grid-cols-4 gap-8">
+          <div>
+            <div class="text-2xl gradient-text mb-4">
+              BiteBuddy
+            </div>
+            <p class="text-secondary/70">
+              Turn healthy eating into an epic adventure with your digital pet
+              companion.
+            </p>
+          </div>
+          <div>
+            <h4 class="text-lg font-bold text-secondary mb-4">Links</h4>
+            <ul class="space-y-2">
+              <li>
+                <a href="#about" class="text-secondary/70 hover:text-secondary"
+                  >About</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#features"
+                  class="text-secondary/70 hover:text-secondary"
+                  >Features</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#how-it-works"
+                  class="text-secondary/70 hover:text-secondary"
+                  >How It Works</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#roadmap"
+                  class="text-secondary/70 hover:text-secondary"
+                  >Roadmap</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg font-bold text-secondary mb-4">Connect</h4>
+            <div class="flex gap-4">
+              <a
+                href="https://x.com/bitebuddy_hq"
+                target="_blank"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary/20 hover-scale"
+              >
+                <i class="ri-twitter-x-line"></i>
+              </a>
+              <a
+                href="https://t.me/+ydfs0mXoZ2M3MzU0"
+                target="_blank"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary/20 hover-scale"
+              >
+                <i class="ri-telegram-line"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-lg font-bold text-secondary mb-4">Newsletter</h4>
+            <form class="flex gap-2">
+              <input
+                type="email"
+                placeholder="Email"
+                class="flex-1 px-4 py-2 bg-dark border border-primary/30 !rounded-button text-secondary focus:border-primary outline-none"
+              />
+              <button
+                type="submit"
+                class="whitespace-nowrap bg-primary text-dark px-4 py-2 !rounded-button font-bold hover:opacity-90"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+        <div
+          class="mt-12 pt-8 border-t border-primary/10 text-center text-secondary/50"
+        >
+          © 2025 BiteBuddy. All rights reserved.
+        </div>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute("href");
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              const headerOffset = 80;
+              const elementPosition = targetElement.getBoundingClientRect().top;
+              const offsetPosition =
+                elementPosition + window.pageYOffset - headerOffset;
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth",
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
