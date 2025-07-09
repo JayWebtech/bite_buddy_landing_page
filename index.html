@@ -51,15 +51,13 @@
       }
       @font-face {
         font-family: "BlockBlueprint";
-        src: url("BlockBlueprint.ttf") format("ttf");
-      }
-      * {
-        font-family: "BlockBlueprint" !important;
+        src: url("./BlockBlueprint.ttf") format("truetype");
+        font-display: swap;
       }
       body {
         background-color: #121212;
         color: #fff5e1;
-        font-family: "BlockBlueprint" !important ;
+        font-family: "BlockBlueprint", "Orbitron", "Courier New", monospace;
       }
       .gradient-text {
         background: linear-gradient(135deg, #ff9f00, #fff5e1);
@@ -705,6 +703,18 @@
       </div>
     </footer>
     <script>
+      // Test font loading
+      document.fonts.ready.then(() => {
+        const testFont = new FontFace('BlockBlueprint', 'url(./BlockBlueprint.ttf)');
+        testFont.load().then(() => {
+          console.log('✅ BlockBlueprint font loaded successfully');
+          document.body.style.fontFamily = '"BlockBlueprint", "Orbitron", "Courier New", monospace';
+        }).catch(() => {
+          console.log('❌ BlockBlueprint font failed to load - using fallback');
+          document.body.style.fontFamily = '"Orbitron", "Courier New", monospace';
+        });
+      });
+
       document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".nav-link").forEach((link) => {
           link.addEventListener("click", function (e) {
