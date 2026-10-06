@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy · BiteBuddy Shielded Arena</title>
+    <meta name="description" content="BiteBuddy Privacy Policy — how we handle your data, meals, photos, Zcash payments, and account deletion." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet" />
+    <style>
+      @font-face {
+        font-family: 'BlockBlueprint';
+        src: url('./BlockBlueprint.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      *, *::before, *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --gold: #F4B728;
+        --gold-dim: #C49220;
+        --dark: #0D0A14;
+        --card: #14101F;
+        --card-raised: #1A1529;
+        --cream: #F5EFE0;
+        --cream-muted: rgba(245, 239, 224, 0.55);
+        --green: #3DDC97;
+        --red: #FF5D73;
+        --purple: #8B5CF6;
+        --border: rgba(245, 239, 224, 0.08);
+        --border-gold: rgba(244, 183, 40, 0.25);
+        --radius: 10px;
+        --radius-lg: 16px;
+      }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        background-color: var(--dark);
+        color: var(--cream);
+        font-family: 'Nunito', sans-serif;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1, h2, h3, .font-display {
+        font-family: 'BlockBlueprint', 'Nunito', sans-serif;
+        font-size-adjust: from-font;
+        line-height: 1.2;
+        letter-spacing: 0.02em;
+      }
+
+      ::selection {
+        background: var(--gold);
+        color: var(--dark);
+      }
+
+      a { color: var(--gold); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+
+      .container {
+        width: 100%;
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      @media (min-width: 768px) {
+        .container { padding: 0 48px; }
+      }
+
+      /* ---- HEADER ---- */
+      .site-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(13, 10, 20, 0.92);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      @media (min-width: 768px) {
+        .header-inner { padding: 0 48px; }
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        border: 2px solid var(--gold);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .logo-text {
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 1.3rem;
+        color: var(--gold);
+        letter-spacing: 0.04em;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--cream-muted);
+        transition: color 0.2s;
+      }
+
+      .back-link:hover {
+        color: var(--gold);
+        text-decoration: none;
+      }
+
+      /* ---- PAGE CONTENT ---- */
+      .page-hero {
+        padding: 120px 0 48px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .page-hero h1 {
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+        color: var(--gold);
+        margin-bottom: 10px;
+      }
+
+      .page-hero .meta {
+        font-size: 0.78rem;
+        color: var(--cream-muted);
+      }
+
+      .policy-content {
+        padding: 48px 0 80px;
+      }
+
+      .policy-section {
+        margin-bottom: 48px;
+      }
+
+      .policy-section h2 {
+        font-size: 1.25rem;
+        color: var(--gold);
+        margin-bottom: 14px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .policy-section h3 {
+        font-size: 1rem;
+        color: var(--cream);
+        margin: 20px 0 8px;
+      }
+
+      .policy-section p {
+        font-size: 0.88rem;
+        color: var(--cream-muted);
+        margin-bottom: 12px;
+      }
+
+      .policy-section ul {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 12px;
+      }
+
+      .policy-section ul li {
+        font-size: 0.85rem;
+        color: var(--cream-muted);
+        padding: 4px 0 4px 20px;
+        position: relative;
+      }
+
+      .policy-section ul li::before {
+        content: '—';
+        position: absolute;
+        left: 0;
+        color: var(--gold);
+      }
+
+      .highlight-box {
+        background: var(--card);
+        border: 1px solid var(--border-gold);
+        border-radius: var(--radius);
+        padding: 20px 24px;
+        margin: 16px 0;
+      }
+
+      .highlight-box p {
+        margin-bottom: 0;
+        font-weight: 600;
+        color: var(--cream);
+        font-size: 0.88rem;
+      }
+
+      .deletion-steps {
+        counter-reset: step;
+        list-style: none;
+        padding: 0;
+        margin: 16px 0;
+      }
+
+      .deletion-steps li {
+        counter-increment: step;
+        padding: 12px 0 12px 44px;
+        position: relative;
+        font-size: 0.85rem;
+        color: var(--cream-muted);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .deletion-steps li:last-child {
+        border-bottom: none;
+      }
+
+      .deletion-steps li::before {
+        content: counter(step);
+        position: absolute;
+        left: 0;
+        top: 12px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 2px solid var(--gold);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 0.72rem;
+        color: var(--gold);
+      }
+
+      .contact-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 28px;
+        margin-top: 16px;
+      }
+
+      .contact-card p {
+        margin-bottom: 8px;
+      }
+
+      .contact-card a {
+        font-weight: 700;
+      }
+
+      /* ---- FOOTER ---- */
+      .site-footer {
+        background: var(--dark);
+        border-top: 1px solid var(--border);
+        padding: 28px 0;
+        text-align: center;
+        font-size: 0.7rem;
+        color: var(--cream-muted);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="./index.html" class="logo" style="text-decoration: none;">
+          <div class="logo-icon">🐾</div>
+          <span class="logo-text">BiteBuddy</span>
+        </a>
+        <a href="./index.html" class="back-link">
+          <i class="ri-arrow-left-s-line" style="font-size: 1.1rem;"></i> Back to Home
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <!-- Page Hero -->
+      <div class="page-hero">
+        <div class="container">
+          <h1>Privacy Policy</h1>
+          <p class="meta">Last updated: October 6, 2026</p>
+        </div>
+      </div>
+
+      <!-- Policy Content -->
+      <div class="policy-content">
+        <div class="container">
+
+          <!-- 1. Introduction -->
+          <div class="policy-section">
+            <h2>1. Introduction</h2>
+            <p>
+              BiteBuddy ("we," "our," or "the App") is a real-time pet battler mobile application that uses meal nutrition data and integrates with the Zcash blockchain for private payments. This Privacy Policy explains what information we collect, how we use it, and your rights regarding your data.
+            </p>
+            <p>
+              BiteBuddy is built around privacy by design. We do not require email addresses, phone numbers, social accounts, or government-issued identification to create an account.
+            </p>
+          </div>
+
+          <!-- 2. Information We Collect -->
+          <div class="policy-section">
+            <h2>2. Information We Collect</h2>
+
+            <h3>2.1 Account Credentials</h3>
+            <p>
+              Your account is created using a locally generated 12-word BIP-39 seed phrase. The seed phrase never leaves your device. We derive an Ed25519 public key from your seed, which serves as your account identifier on our servers. We do not store your seed phrase, private key, or any personally identifying credentials.
+            </p>
+
+            <h3>2.2 Meal Photos & Nutrition Data</h3>
+            <p>
+              When you snap a meal, the photo is analyzed by our AI vision model to extract nutritional estimates (calories, protein, carbs, fats, greens). After analysis:
+            </p>
+            <ul>
+              <li>Meal photos are processed in-memory and are not permanently stored on our servers</li>
+              <li>Only the resulting nutritional scores and meal timestamps are retained to power your pet's vitals</li>
+              <li>You can delete your meal history at any time from the app settings</li>
+            </ul>
+
+            <h3>2.3 Gameplay Data</h3>
+            <p>
+              We store gameplay-related data including pet stats (health, energy, fullness), battle history, PvP records, leaderboard rankings, and tournament results. This data is tied to your public key, not to any personal identity.
+            </p>
+
+            <h3>2.4 Payment Information</h3>
+            <p>
+              All payments use Zcash (ZEC) shielded transactions or PetraPay. We do not process or store credit card numbers, bank details, or traditional payment credentials. Shielded ZEC transactions are private by default on the Zcash blockchain.
+            </p>
+
+            <h3>2.5 Device & Technical Data</h3>
+            <p>
+              We may collect minimal technical data to ensure app functionality:
+            </p>
+            <ul>
+              <li>Device type and operating system version</li>
+              <li>App version number</li>
+              <li>Crash logs and error reports (anonymized)</li>
+              <li>Local timezone (for meal window scheduling)</li>
+            </ul>
+            <p>
+              We do not collect advertising identifiers (IDFA/GAID), location data, contacts, or browsing history.
+            </p>
+          </div>
+
+          <!-- 3. How We Use Your Information -->
+          <div class="policy-section">
+            <h2>3. How We Use Your Information</h2>
+            <ul>
+              <li>To operate the pet vitals system (health, energy, and fullness tied to real meals)</li>
+              <li>To power real-time PvP matchmaking and battle resolution</li>
+              <li>To display leaderboards and tournament standings</li>
+              <li>To process Zcash-based purchases for in-game items (skins, revives, passes)</li>
+              <li>To send local push notifications for meal windows and battle invites</li>
+              <li>To diagnose crashes and improve app stability</li>
+            </ul>
+          </div>
+
+          <!-- 4. Data Sharing -->
+          <div class="policy-section">
+            <h2>4. Data Sharing & Third Parties</h2>
+            <p>We do not sell, rent, or trade your personal data. We share information only in these limited circumstances:</p>
+            <ul>
+              <li><strong>PvP opponents</strong> — During battles, your pet's name, stats, and moves are shared with your opponent in real-time. If Shielded Mode is enabled, your username and rating are masked.</li>
+              <li><strong>Leaderboards</strong> — Public leaderboards display usernames and rankings. Shielded Mode users appear as anonymous entries.</li>
+              <li><strong>Infrastructure providers</strong> — We use cloud hosting and Socket.io servers to facilitate real-time gameplay. These providers process data on our behalf under strict contractual obligations.</li>
+              <li><strong>Legal requirements</strong> — We may disclose information if required by law or valid legal process.</li>
+            </ul>
+          </div>
+
+          <!-- 5. Data Security -->
+          <div class="policy-section">
+            <h2>5. Data Security</h2>
+            <p>
+              We employ industry-standard security measures including encrypted connections (TLS), server-side access controls, and regular security audits. Your seed phrase and private key are stored exclusively on your device and are never transmitted to our servers.
+            </p>
+            <div class="highlight-box">
+              <p>⚠️ If you lose your 12-word seed phrase, we cannot recover your account. Please store it securely offline.</p>
+            </div>
+          </div>
+
+          <!-- 6. Children's Privacy -->
+          <div class="policy-section">
+            <h2>6. Children's Privacy</h2>
+            <p>
+              BiteBuddy is not directed at children under 13. We do not knowingly collect information from children under 13. If we discover that a child under 13 has created an account, we will promptly delete the associated data.
+            </p>
+          </div>
+
+          <!-- 7. Data Retention -->
+          <div class="policy-section">
+            <h2>7. Data Retention</h2>
+            <p>
+              We retain your gameplay data for as long as your account exists. Meal nutrition scores are retained for up to 90 days to calculate rolling averages and pet stat trends, unless you delete them earlier. Anonymized crash data is retained for up to 12 months.
+            </p>
+          </div>
+
+          <!-- 8. Account Deletion -->
+          <div class="policy-section" id="account-deletion">
+            <h2>8. Account Deletion</h2>
+            <p>
+              You can permanently delete your account and all associated data directly from the app. Here's how:
+            </p>
+            <ol class="deletion-steps">
+              <li>Open BiteBuddy and go to <strong>Settings</strong> (gear icon in the top-right corner)</li>
+              <li>Scroll down and tap <strong>"Account & Privacy"</strong></li>
+              <li>Tap <strong>"Delete My Account"</strong></li>
+              <li>Confirm by entering your seed phrase (first 4 words)</li>
+              <li>Your account, pet data, battle history, and meal logs will be permanently erased within 48 hours</li>
+            </ol>
+            <div class="highlight-box">
+              <p>🗑️ Account deletion is irreversible. All pet progress, ZEC purchase history, and battle records will be permanently removed from our servers.</p>
+            </div>
+          </div>
+
+          <!-- 9. Your Rights -->
+          <div class="policy-section">
+            <h2>9. Your Rights</h2>
+            <p>Depending on your jurisdiction, you may have the right to:</p>
+            <ul>
+              <li>Access the data we hold about your account</li>
+              <li>Request correction of inaccurate data</li>
+              <li>Request deletion of your data (see Account Deletion above)</li>
+              <li>Object to or restrict certain data processing</li>
+              <li>Data portability — export your gameplay and meal data</li>
+            </ul>
+            <p>
+              To exercise these rights, contact us using the details below. We will respond within 30 days.
+            </p>
+          </div>
+
+          <!-- 10. Changes to This Policy -->
+          <div class="policy-section">
+            <h2>10. Changes to This Policy</h2>
+            <p>
+              We may update this Privacy Policy from time to time. Material changes will be communicated via an in-app notification. Your continued use of BiteBuddy after changes take effect constitutes your acceptance of the revised policy.
+            </p>
+          </div>
+
+          <!-- 11. Contact Us -->
+          <div class="policy-section">
+            <h2>11. Contact Us</h2>
+            <p>
+              If you have questions about this Privacy Policy or want to exercise your data rights, reach out to us:
+            </p>
+            <div class="contact-card">
+              <p>📧 Email: <a href="mailto:privacy@bitebuddy.app">privacy@bitebuddy.app</a></p>
+              <p>🐦 Twitter / X: <a href="https://x.com/bitebuddy_hq" target="_blank">@bitebuddy_hq</a></p>
+              <p>💬 Telegram: <a href="https://t.me/+ydfs0mXoZ2M3MzU0" target="_blank">BiteBuddy Community</a></p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container">
+        © 2026 BiteBuddy · Shielded Arena. All rights reserved. · <a href="./index.html">Home</a>
+      </div>
+    </footer>
+  </body>
+</html>

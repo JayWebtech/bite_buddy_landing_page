@@ -5,229 +5,1084 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BiteBuddy · Shielded Arena | Real-time Pet Battler for Zcash</title>
     <meta name="description" content="Feed your buddy by snapping your real meals, battle other players live in the arena, and play privately with shielded ZEC." />
-    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Nunito:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
-      rel="stylesheet"
-    />
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: "#F4B728",     /* Zcash Gold */
-              primaryHover: "#DDA31E",
-              secondary: "#FFF5E1",
-              dark: "#110C1D",        /* Deep BiteBuddy Purple/Black */
-              darkCard: "#1A132B",
-              accent: "#8B5CF6",      /* Shade/Arcane */
-              cyan: "#00F0FF",
-              greenVital: "#3DDC97",
-              redVital: "#FF5D73",
-            },
-            fontFamily: {
-              display: ["Orbitron", "sans-serif"],
-              sans: ["Nunito", "sans-serif"],
-            },
-            borderRadius: {
-              button: "12px",
-            },
-          },
-        },
-      };
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet" />
     <style>
-      :where([class^="ri-"])::before {
-        content: "\f3c2";
+      /* ---- CUSTOM FONT ---- */
+      @font-face {
+        font-family: 'BlockBlueprint';
+        src: url('./BlockBlueprint.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
       }
+
+      /* ---- RESET ---- */
+      *, *::before, *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --gold: #F4B728;
+        --gold-dim: #C49220;
+        --dark: #0D0A14;
+        --card: #14101F;
+        --card-raised: #1A1529;
+        --cream: #F5EFE0;
+        --cream-muted: rgba(245, 239, 224, 0.55);
+        --green: #3DDC97;
+        --red: #FF5D73;
+        --purple: #8B5CF6;
+        --cyan: #00F0FF;
+        --border: rgba(245, 239, 224, 0.08);
+        --border-gold: rgba(244, 183, 40, 0.25);
+        --radius: 10px;
+        --radius-lg: 16px;
+      }
+
       html {
         scroll-behavior: smooth;
       }
+
       body {
-        background-color: #110C1D;
-        color: #fff5e1;
+        background-color: var(--dark);
+        color: var(--cream);
         font-family: 'Nunito', sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
       }
+
+      /* ---- TYPOGRAPHY ---- */
       h1, h2, h3, .font-display {
-        font-family: 'Orbitron', sans-serif;
+        font-family: 'BlockBlueprint', 'Nunito', sans-serif;
+        font-size-adjust: from-font;
+        line-height: 1.15;
+        letter-spacing: 0.02em;
       }
-      .gradient-gold {
-        background: linear-gradient(135deg, #F4B728, #FFF5E1);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
+
+      h1 { font-size: clamp(2rem, 5vw, 3.4rem); }
+      h2 { font-size: clamp(1.6rem, 4vw, 2.8rem); }
+      h3 { font-size: 1.15rem; }
+
+      p { color: var(--cream-muted); }
+
+      a {
+        color: inherit;
+        text-decoration: none;
       }
-      .glow-gold {
-        filter: drop-shadow(0 0 16px rgba(244, 183, 40, 0.35));
+
+      ::selection {
+        background: var(--gold);
+        color: var(--dark);
       }
-      .floating {
-        animation: float 3.5s ease-in-out infinite;
+
+      /* ---- LAYOUT ---- */
+      .container {
+        width: 100%;
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 0 24px;
       }
-      @keyframes float {
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 48px;
+        align-items: center;
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      @media (min-width: 768px) {
+        .container { padding: 0 48px; }
+        .grid-2 { grid-template-columns: 1fr 1fr; }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+      }
+
+      /* ---- HEADER ---- */
+      .site-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(13, 10, 20, 0.92);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        border: 2px solid var(--gold);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .logo-text {
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 1.3rem;
+        color: var(--gold);
+        letter-spacing: 0.04em;
+      }
+
+      .logo-badge {
+        display: none;
+        font-size: 0.6rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        padding: 3px 8px;
+        border: 1px solid var(--border-gold);
+        border-radius: 20px;
+        color: var(--gold);
+        font-weight: 800;
+      }
+
+      @media (min-width: 640px) {
+        .logo-badge { display: inline-block; }
+      }
+
+      .nav-links {
+        display: none;
+        gap: 28px;
+        list-style: none;
+      }
+
+      .nav-links a {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--cream-muted);
+        transition: color 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .nav-links a:hover {
+        color: var(--gold);
+      }
+
+      @media (min-width: 768px) {
+        .nav-links { display: flex; }
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 10px 22px;
+        border-radius: var(--radius);
+        border: none;
+        cursor: pointer;
+        transition: transform 0.15s, background 0.2s, border-color 0.2s;
+        white-space: nowrap;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn-gold {
+        background: var(--gold);
+        color: var(--dark);
+      }
+
+      .btn-gold:hover {
+        background: var(--gold-dim);
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 2px solid var(--border-gold);
+        color: var(--gold);
+      }
+
+      .btn-outline:hover {
+        border-color: var(--gold);
+        background: rgba(244, 183, 40, 0.06);
+      }
+
+      .btn-ghost {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--cream);
+      }
+
+      .btn-ghost:hover {
+        border-color: rgba(245, 239, 224, 0.25);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      /* ---- SECTIONS ---- */
+      section {
+        padding: 100px 0;
+      }
+
+      .section-label {
+        display: inline-block;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        padding: 5px 14px;
+        border: 1px solid var(--border-gold);
+        border-radius: 20px;
+        color: var(--gold);
+        margin-bottom: 16px;
+      }
+
+      .section-header {
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto 64px;
+      }
+
+      .section-header h2 {
+        color: var(--gold);
+        margin-bottom: 12px;
+      }
+
+      .section-header p {
+        font-size: 0.95rem;
+      }
+
+      .section-alt {
+        background: var(--card);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+
+      /* ---- HERO ---- */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding-top: 100px;
+        padding-bottom: 60px;
+        position: relative;
+      }
+
+      /* Subtle grid overlay instead of gradient */
+      .hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(244, 183, 40, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(244, 183, 40, 0.03) 1px, transparent 1px);
+        background-size: 52px 52px;
+        pointer-events: none;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.68rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 5px 14px;
+        border: 1px solid var(--border-gold);
+        border-radius: 20px;
+        color: var(--gold);
+        margin-bottom: 20px;
+      }
+
+      .hero h1 {
+        color: var(--gold);
+        margin-bottom: 20px;
+        max-width: 540px;
+      }
+
+      .hero p {
+        font-size: 1.05rem;
+        max-width: 500px;
+        margin-bottom: 28px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 40px;
+      }
+
+      .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        border-top: 1px solid var(--border);
+        padding-top: 28px;
+        max-width: 460px;
+      }
+
+      .hero-stat {
+        text-align: center;
+      }
+
+      .hero-stat-value {
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 1.3rem;
+        display: block;
+        margin-bottom: 2px;
+      }
+
+      .hero-stat-label {
+        font-size: 0.68rem;
+        color: var(--cream-muted);
+      }
+
+      .stat-gold { color: var(--gold); }
+      .stat-green { color: var(--green); }
+      .stat-cyan { color: var(--cyan); }
+
+      /* ---- PHONE MOCKUP ---- */
+      .phone-mockup {
+        max-width: 320px;
+        margin: 0 auto;
+        background: var(--card);
+        border-radius: 32px;
+        border: 3px solid var(--border-gold);
+        padding: 16px;
+        position: relative;
+      }
+
+      .phone-status-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 8px 8px;
+        font-size: 0.7rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--cream-muted);
+      }
+
+      .phone-status-bar strong {
+        font-family: 'BlockBlueprint', sans-serif;
+        color: var(--gold);
+      }
+
+      .phone-diet-badge {
+        font-size: 0.58rem;
+        font-weight: 800;
+        padding: 2px 8px;
+        border-radius: 10px;
+        background: rgba(61, 220, 151, 0.12);
+        color: var(--green);
+      }
+
+      .phone-arena {
+        height: 200px;
+        margin: 10px 0;
+        border-radius: 14px;
+        background: var(--card-raised);
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .phone-shielded-tag {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font-size: 0.6rem;
+        color: var(--gold);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 2px 8px;
+        border-radius: 10px;
+      }
+
+      .phone-pet {
+        font-size: 3.5rem;
+        animation: bob 3s ease-in-out infinite;
+        margin-bottom: 6px;
+        user-select: none;
+      }
+
+      @keyframes bob {
         0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
+        50% { transform: translateY(-8px); }
       }
-      .hero-grid {
-        background-image: 
-          linear-gradient(rgba(244, 183, 40, 0.04) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(244, 183, 40, 0.04) 1px, transparent 1px);
-        background-size: 48px 48px;
+
+      .phone-pet-name {
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 0.85rem;
+        color: var(--cream);
+      }
+
+      .phone-pet-status {
+        font-size: 0.65rem;
+        color: var(--cream-muted);
+      }
+
+      /* Vitals */
+      .phone-vitals {
+        background: rgba(13, 10, 20, 0.6);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .vital-row {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .vital-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.68rem;
+        font-weight: 700;
+      }
+
+      .vital-bar-track {
+        height: 6px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .vital-bar-fill {
+        height: 100%;
+        border-radius: 4px;
+      }
+
+      .vital-red .vital-header span:first-child { color: var(--red); }
+      .vital-red .vital-bar-fill { background: var(--red); }
+      .vital-gold .vital-header span:first-child { color: var(--gold); }
+      .vital-gold .vital-bar-fill { background: var(--gold); }
+      .vital-green .vital-header span:first-child { color: var(--green); }
+      .vital-green .vital-bar-fill { background: var(--green); }
+
+      .vital-header span:last-child {
+        color: var(--cream-muted);
+        font-size: 0.62rem;
+      }
+
+      .phone-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .phone-btn {
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        padding: 10px 0;
+        border-radius: var(--radius);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: opacity 0.2s;
+      }
+
+      .phone-btn:hover { opacity: 0.85; }
+
+      .phone-btn-gold {
+        background: var(--gold);
+        color: var(--dark);
+      }
+
+      .phone-btn-purple {
+        background: var(--purple);
+        color: #fff;
+      }
+
+      /* ---- FEATURE CARDS ---- */
+      .feature-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 32px;
+        transition: border-color 0.25s;
+      }
+
+      .feature-card:hover {
+        border-color: var(--border-gold);
+      }
+
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+      }
+
+      .icon-gold { background: rgba(244, 183, 40, 0.1); }
+      .icon-green { background: rgba(61, 220, 151, 0.1); }
+      .icon-purple { background: rgba(139, 92, 246, 0.1); }
+
+      .feature-card h3 {
+        color: var(--cream);
+        margin-bottom: 8px;
+      }
+
+      .feature-card p {
+        font-size: 0.85rem;
+        line-height: 1.65;
+      }
+
+      /* ---- BATTLE INFO LIST ---- */
+      .battle-info-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-top: 24px;
+      }
+
+      .battle-info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 16px;
+        border-radius: var(--radius);
+        background: var(--card);
+        border: 1px solid var(--border);
+      }
+
+      .battle-info-item .bi-icon {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+        line-height: 1;
+        padding-top: 2px;
+      }
+
+      .battle-info-item h4 {
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 0.85rem;
+        color: var(--cream);
+        margin-bottom: 4px;
+      }
+
+      .battle-info-item p {
+        font-size: 0.78rem;
+        color: var(--cream-muted);
+        line-height: 1.5;
+      }
+
+      /* ---- ARENA GRAPHIC ---- */
+      .arena-graphic {
+        background: var(--card-raised);
+        border: 1px solid var(--border-gold);
+        border-radius: var(--radius-lg);
+        padding: 32px;
+        text-align: center;
+      }
+
+      .arena-fighters {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 28px;
+      }
+
+      .arena-fighter {
+        text-align: center;
+      }
+
+      .arena-fighter .af-emoji {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .arena-fighter .af-name {
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 0.8rem;
+        color: var(--gold);
+      }
+
+      .arena-fighter .af-hp {
+        font-size: 0.65rem;
+        color: var(--cream-muted);
+      }
+
+      .arena-vs {
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 1.8rem;
+        color: var(--red);
+        animation: pulse-vs 1.5s ease-in-out infinite;
+      }
+
+      @keyframes pulse-vs {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+      }
+
+      .arena-timer {
+        background: var(--dark);
+        border: 1px solid var(--border-gold);
+        border-radius: var(--radius);
+        padding: 10px;
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 0.72rem;
+        color: var(--gold);
+        letter-spacing: 0.08em;
+        margin-bottom: 16px;
+      }
+
+      .arena-moves {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+
+      .arena-move {
+        padding: 10px 6px;
+        border-radius: 8px;
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-align: center;
+      }
+
+      .move-strike { background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3); color: #f97316; }
+      .move-guard { background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); color: #3b82f6; }
+      .move-break { background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); color: #8b5cf6; }
+      .move-charge { background: rgba(244, 183, 40, 0.15); border: 1px solid rgba(244, 183, 40, 0.3); color: #F4B728; }
+
+      /* ---- PRIVACY CARDS ---- */
+      .privacy-card {
+        background: var(--dark);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 32px;
+      }
+
+      .privacy-card .pc-icon {
+        font-size: 1.8rem;
+        color: var(--gold);
+        margin-bottom: 14px;
+        display: block;
+      }
+
+      .privacy-card h3 {
+        color: var(--cream);
+        margin-bottom: 8px;
+      }
+
+      .privacy-card p {
+        font-size: 0.85rem;
+        line-height: 1.6;
+      }
+
+      /* ---- ROADMAP ---- */
+      .roadmap-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 28px;
+      }
+
+      .roadmap-card.active {
+        border-color: var(--border-gold);
+        box-shadow: 0 0 0 1px var(--border-gold);
+      }
+
+      .roadmap-phase {
+        display: inline-block;
+        font-size: 0.6rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 3px 10px;
+        border-radius: 10px;
+        margin-bottom: 14px;
+      }
+
+      .phase-done { background: rgba(244, 183, 40, 0.1); color: var(--gold); }
+      .phase-current { background: rgba(61, 220, 151, 0.1); color: var(--green); }
+      .phase-future { background: rgba(255, 255, 255, 0.04); color: var(--cream-muted); }
+
+      .roadmap-card h3 {
+        color: var(--cream);
+        margin-bottom: 12px;
+      }
+
+      .roadmap-card ul {
+        list-style: none;
+        font-size: 0.82rem;
+        color: var(--cream-muted);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      /* ---- CTA ---- */
+      .cta-section {
+        text-align: center;
+      }
+
+      .cta-section h2 {
+        color: var(--gold);
+        margin-bottom: 14px;
+      }
+
+      .cta-section p {
+        font-size: 1rem;
+        max-width: 520px;
+        margin: 0 auto 28px;
+      }
+
+      .cta-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+      }
+
+      /* ---- FOOTER ---- */
+      .site-footer {
+        background: var(--dark);
+        border-top: 1px solid var(--border);
+        padding: 60px 0 32px;
+        font-size: 0.82rem;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 32px;
+        margin-bottom: 40px;
+      }
+
+      @media (min-width: 768px) {
+        .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
+      }
+
+      .footer-brand .fb-name {
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 1.1rem;
+        color: var(--gold);
+        margin-bottom: 6px;
+      }
+
+      .footer-brand p {
+        font-size: 0.75rem;
+        max-width: 260px;
+      }
+
+      .footer-col h4 {
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 0.8rem;
+        color: var(--cream);
+        margin-bottom: 12px;
+      }
+
+      .footer-col ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .footer-col a {
+        font-size: 0.75rem;
+        color: var(--cream-muted);
+        transition: color 0.2s;
+      }
+
+      .footer-col a:hover { color: var(--gold); }
+
+      .footer-social {
+        display: flex;
+        gap: 10px;
+      }
+
+      .footer-social a {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        font-size: 0.9rem;
+        transition: border-color 0.2s, background 0.2s;
+      }
+
+      .footer-social a:hover {
+        border-color: var(--gold);
+        background: rgba(244, 183, 40, 0.08);
+      }
+
+      .footer-bottom {
+        border-top: 1px solid var(--border);
+        padding-top: 24px;
+        text-align: center;
+        font-size: 0.7rem;
+        color: var(--cream-muted);
+      }
+
+      /* ---- MOBILE NAV ---- */
+      .mobile-nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: transparent;
+        color: var(--cream);
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+
+      @media (min-width: 768px) {
+        .mobile-nav-toggle { display: none; }
+      }
+
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 99;
+        background: rgba(13, 10, 20, 0.97);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+      }
+
+      .mobile-menu.open {
+        display: flex;
+      }
+
+      .mobile-menu a {
+        font-family: 'BlockBlueprint', sans-serif;
+        font-size: 1.2rem;
+        color: var(--cream);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        transition: color 0.2s;
+      }
+
+      .mobile-menu a:hover { color: var(--gold); }
+
+      .mobile-close {
+        position: absolute;
+        top: 20px;
+        right: 24px;
+        background: none;
+        border: none;
+        color: var(--cream);
+        font-size: 1.6rem;
+        cursor: pointer;
+      }
+
+      /* ---- SCROLL REVEAL ---- */
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
       }
     </style>
   </head>
-  <body class="min-h-screen selection:bg-primary selection:text-dark">
+  <body>
     <!-- Header -->
-    <header class="fixed top-0 w-full z-50 bg-dark/90 backdrop-blur-md border-b border-primary/10">
-      <nav class="container mx-auto px-4 md:px-12 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-primary/20 border border-primary/40 flex items-center justify-center text-primary font-display font-bold text-xl glow-gold">
-            🐾
-          </div>
-          <span class="text-2xl font-display font-bold tracking-wider gradient-gold">BiteBuddy</span>
-          <span class="hidden sm:inline-block text-xs uppercase px-2.5 py-0.5 rounded-full border border-primary/30 text-primary bg-primary/10 tracking-widest font-bold">
-            Shielded Arena
-          </span>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="logo">
+          <div class="logo-icon">🐾</div>
+          <span class="logo-text">BiteBuddy</span>
+          <span class="logo-badge">Shielded Arena</span>
         </div>
 
-        <div class="hidden md:flex items-center gap-8 text-sm font-semibold">
-          <a href="#about" class="text-secondary/70 hover:text-primary transition-colors">About</a>
-          <a href="#meal-loop" class="text-secondary/70 hover:text-primary transition-colors">Meal Loop</a>
-          <a href="#battle" class="text-secondary/70 hover:text-primary transition-colors">PvP Arena</a>
-          <a href="#zcash" class="text-secondary/70 hover:text-primary transition-colors">Privacy & ZEC</a>
-          <a href="#roadmap" class="text-secondary/70 hover:text-primary transition-colors">Roadmap</a>
-          <a href="./privacy.html" class="text-secondary/70 hover:text-primary transition-colors">Privacy Policy</a>
-        </div>
+        <nav class="nav-links">
+          <a href="#about">About</a>
+          <a href="#meal-loop">Meal Loop</a>
+          <a href="#battle">PvP Arena</a>
+          <a href="#zcash">Privacy & ZEC</a>
+          <a href="#roadmap">Roadmap</a>
+          <a href="./privacy.html">Privacy Policy</a>
+        </nav>
 
-        <div class="flex items-center gap-4">
-          <a
-            href="#download"
-            class="bg-primary text-dark font-display font-bold text-xs uppercase tracking-wider px-5 py-2.5 !rounded-button hover:bg-primaryHover transition-all transform hover:scale-105 shadow-lg shadow-primary/20"
-          >
-            Play Now
-          </a>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a href="#download" class="btn btn-gold" style="display: none;" id="header-cta">Play Now</a>
+          <button class="mobile-nav-toggle" id="menu-open" aria-label="Open menu">
+            <i class="ri-menu-3-line"></i>
+          </button>
         </div>
-      </nav>
+      </div>
     </header>
 
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+      <button class="mobile-close" id="menu-close" aria-label="Close menu">&times;</button>
+      <a href="#about" onclick="closeMobileMenu()">About</a>
+      <a href="#meal-loop" onclick="closeMobileMenu()">Meal Loop</a>
+      <a href="#battle" onclick="closeMobileMenu()">PvP Arena</a>
+      <a href="#zcash" onclick="closeMobileMenu()">Privacy & ZEC</a>
+      <a href="#roadmap" onclick="closeMobileMenu()">Roadmap</a>
+      <a href="./privacy.html">Privacy Policy</a>
+    </div>
+
     <main>
-      <!-- Hero Section -->
-      <section class="relative min-h-screen flex items-center pt-28 pb-16 hero-grid">
-        <div class="container mx-auto px-4 md:px-12 relative z-10">
-          <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div class="space-y-6">
-              <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider">
-                <i class="ri-shield-check-fill text-sm"></i>
-                Powered by Shielded Zcash · 100% Private Accounts
+      <!-- Hero -->
+      <section class="hero" id="about">
+        <div class="container">
+          <div class="grid-2 hero-content">
+            <div>
+              <div class="hero-label">
+                <i class="ri-shield-check-fill"></i>
+                Powered by Shielded Zcash · 100% Private
               </div>
-              
-              <h1 class="text-4xl md:text-6xl font-bold leading-tight gradient-gold">
-                Eat Real Food. Power Your Pet. Battle Live.
-              </h1>
-              
-              <p class="text-lg md:text-xl text-secondary/80 leading-relaxed font-normal">
-                Snap photos of your breakfast, lunch, and dinner. BiteBuddy’s AI analyzes your nutrients to strengthen your pet. Challenge opponents in tactical blind-turn PvP and keep your identity completely private with 12-word seed keys and shielded ZEC.
+
+              <h1>Eat Real Food. Power Your Pet. Battle Live.</h1>
+
+              <p>
+                Snap photos of your breakfast, lunch, and dinner. BiteBuddy's AI analyzes your nutrients to strengthen your pet. Challenge opponents in tactical blind-turn PvP and keep your identity completely private with 12-word seed keys and shielded ZEC.
               </p>
 
-              <div class="flex flex-wrap gap-4 pt-2">
-                <a
-                  href="#download"
-                  class="bg-primary text-dark font-display text-sm tracking-wider px-7 py-3.5 !rounded-button font-bold hover:bg-primaryHover transition-all shadow-xl shadow-primary/25 inline-flex items-center gap-2"
-                >
-                  <i class="ri-apple-fill text-lg"></i> Get on iOS / TestFlight
+              <div class="hero-actions">
+                <a href="#download" class="btn btn-gold">
+                  <i class="ri-apple-fill" style="font-size: 1.1rem;"></i> Get on iOS / TestFlight
                 </a>
-                <a
-                  href="#battle"
-                  class="border-2 border-primary/40 text-primary px-7 py-3.5 !rounded-button font-bold hover:bg-primary/10 transition-colors text-sm inline-flex items-center gap-2"
-                >
+                <a href="#battle" class="btn btn-outline">
                   <i class="ri-sword-line"></i> Explore Arena
                 </a>
               </div>
 
-              <!-- Quick Highlights -->
-              <div class="grid grid-cols-3 gap-4 pt-6 border-t border-primary/10 text-center">
-                <div>
-                  <div class="font-display text-2xl font-bold text-primary">0% KYC</div>
-                  <div class="text-xs text-secondary/60">12-Word Seed Login</div>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat-value stat-gold">0% KYC</span>
+                  <span class="hero-stat-label">12-Word Seed Login</span>
                 </div>
-                <div>
-                  <div class="font-display text-2xl font-bold text-greenVital">AI Vision</div>
-                  <div class="text-xs text-secondary/60">Meal Nutrient Scanning</div>
+                <div class="hero-stat">
+                  <span class="hero-stat-value stat-green">AI Vision</span>
+                  <span class="hero-stat-label">Meal Nutrient Scanning</span>
                 </div>
-                <div>
-                  <div class="font-display text-2xl font-bold text-cyan">Live PvP</div>
-                  <div class="text-xs text-secondary/60">Tactical 15s Turns</div>
+                <div class="hero-stat">
+                  <span class="hero-stat-value stat-cyan">Live PvP</span>
+                  <span class="hero-stat-label">Tactical 15s Turns</span>
                 </div>
               </div>
             </div>
 
-            <!-- In-Game Mobile UI Mockup -->
-            <div class="relative max-w-sm mx-auto w-full">
-              <div class="relative bg-gradient-to-b from-[#1C1433] via-[#150E28] to-[#110C1D] rounded-[40px] p-4 border-4 border-primary/30 shadow-2xl glow-gold">
-                <!-- Status Header -->
-                <div class="flex justify-between items-center px-3 py-2 text-xs border-b border-white/5 text-secondary/70">
-                  <span class="font-display font-bold text-primary">Emberbun · Lvl 8</span>
-                  <span class="px-2 py-0.5 rounded-full bg-greenVital/15 text-greenVital font-bold text-[10px]">DIET: GRADE A</span>
+            <!-- Phone Mockup -->
+            <div>
+              <div class="phone-mockup">
+                <div class="phone-status-bar">
+                  <strong>Emberbun · Lvl 8</strong>
+                  <span class="phone-diet-badge">DIET: GRADE A</span>
                 </div>
 
-                <!-- Pet Avatar Stage -->
-                <div class="relative h-60 my-3 rounded-2xl bg-gradient-to-b from-[#2B1B4D]/60 to-[#120B22] flex flex-col items-center justify-center overflow-hidden border border-primary/20">
-                  <div class="absolute top-3 right-3 flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/40 text-[11px] text-primary">
+                <div class="phone-arena">
+                  <span class="phone-shielded-tag">
                     <i class="ri-shield-keyhole-line"></i> Shielded Mode
-                  </div>
-
-                  <div class="floating text-7xl select-none mb-2">
-                    🐰🔥
-                  </div>
-                  <div class="text-sm font-display font-bold text-secondary">Blaze Hopper</div>
-                  <div class="text-[11px] text-secondary/60">Ready for Arena Battle</div>
+                  </span>
+                  <div class="phone-pet">🐰🔥</div>
+                  <div class="phone-pet-name">Blaze Hopper</div>
+                  <div class="phone-pet-status">Ready for Arena Battle</div>
                 </div>
 
-                <!-- Live Vitals Bars -->
-                <div class="space-y-2 px-2 py-3 bg-dark/70 rounded-xl border border-white/5">
-                  <div>
-                    <div class="flex justify-between text-xs mb-1">
-                      <span class="text-redVital font-bold">❤️ Health</span>
-                      <span class="text-secondary/70 text-[11px]">96 / 100</span>
+                <div class="phone-vitals">
+                  <div class="vital-row vital-red">
+                    <div class="vital-header">
+                      <span>❤️ Health</span>
+                      <span>96 / 100</span>
                     </div>
-                    <div class="h-2 bg-black/50 rounded-full overflow-hidden">
-                      <div class="h-full bg-gradient-to-r from-red-500 to-redVital rounded-full" style="width: 96%"></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="flex justify-between text-xs mb-1">
-                      <span class="text-primary font-bold">⚡ Energy</span>
-                      <span class="text-secondary/70 text-[11px]">82 / 100</span>
-                    </div>
-                    <div class="h-2 bg-black/50 rounded-full overflow-hidden">
-                      <div class="h-full bg-gradient-to-r from-amber-500 to-primary rounded-full" style="width: 82%"></div>
+                    <div class="vital-bar-track">
+                      <div class="vital-bar-fill" style="width: 96%;"></div>
                     </div>
                   </div>
-
-                  <div>
-                    <div class="flex justify-between text-xs mb-1">
-                      <span class="text-greenVital font-bold">🍽 Fullness</span>
-                      <span class="text-secondary/70 text-[11px]">Lunch Fed (12:45 PM)</span>
+                  <div class="vital-row vital-gold">
+                    <div class="vital-header">
+                      <span>⚡ Energy</span>
+                      <span>82 / 100</span>
                     </div>
-                    <div class="h-2 bg-black/50 rounded-full overflow-hidden">
-                      <div class="h-full bg-gradient-to-r from-emerald-600 to-greenVital rounded-full" style="width: 78%"></div>
+                    <div class="vital-bar-track">
+                      <div class="vital-bar-fill" style="width: 82%;"></div>
+                    </div>
+                  </div>
+                  <div class="vital-row vital-green">
+                    <div class="vital-header">
+                      <span>🍽 Fullness</span>
+                      <span>Lunch Fed (12:45 PM)</span>
+                    </div>
+                    <div class="vital-bar-track">
+                      <div class="vital-bar-fill" style="width: 78%;"></div>
                     </div>
                   </div>
                 </div>
 
-                <!-- Action Button -->
-                <div class="mt-4 grid grid-cols-2 gap-2">
-                  <button class="bg-primary hover:bg-primaryHover text-dark font-display font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-md">
-                    <i class="ri-camera-fill text-base"></i> SNAP MEAL
+                <div class="phone-buttons">
+                  <button class="phone-btn phone-btn-gold">
+                    <i class="ri-camera-fill"></i> SNAP MEAL
                   </button>
-                  <button class="bg-accent hover:opacity-90 text-white font-display font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-md">
-                    <i class="ri-sword-fill text-base"></i> PVP DUEL
+                  <button class="phone-btn phone-btn-purple">
+                    <i class="ri-sword-fill"></i> PVP DUEL
                   </button>
                 </div>
               </div>
@@ -237,45 +1092,37 @@
       </section>
 
       <!-- Meal Loop Section -->
-      <section class="py-24 bg-darkCard/40 border-t border-primary/10" id="meal-loop">
-        <div class="container mx-auto px-4 md:px-12">
-          <div class="text-center max-w-2xl mx-auto mb-16">
-            <span class="text-xs uppercase px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary font-bold tracking-widest">
-              Daily Habit Engine
-            </span>
-            <h2 class="text-3xl md:text-5xl font-bold gradient-gold mt-3">Real Nutrition Powers Your Buddy</h2>
-            <p class="text-secondary/70 mt-4 text-base">
+      <section class="section-alt" id="meal-loop">
+        <div class="container">
+          <div class="section-header reveal">
+            <span class="section-label">Daily Habit Engine</span>
+            <h2>Real Nutrition Powers Your Buddy</h2>
+            <p>
               No fake buttons. Your pet's stamina, battle HP, and stats are directly tethered to your real-life dietary habits.
             </p>
           </div>
 
-          <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-darkCard p-8 rounded-2xl border border-primary/15 hover:border-primary/40 transition-all">
-              <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary text-2xl mb-6">
-                🍳
-              </div>
-              <h3 class="text-xl font-bold mb-3">Meal Windows</h3>
-              <p class="text-secondary/70 text-sm leading-relaxed">
+          <div class="grid-3">
+            <div class="feature-card reveal">
+              <div class="feature-icon icon-gold">🍳</div>
+              <h3>Meal Windows</h3>
+              <p>
                 Log meals during local time slots: Breakfast (05:00–11:00), Lunch (11:00–16:00), and Dinner (16:00–23:00). Skip meals and your pet loses energy and grows hungry.
               </p>
             </div>
 
-            <div class="bg-darkCard p-8 rounded-2xl border border-primary/15 hover:border-primary/40 transition-all">
-              <div class="w-14 h-14 rounded-xl bg-greenVital/10 flex items-center justify-center text-greenVital text-2xl mb-6">
-                🥗
-              </div>
-              <h3 class="text-xl font-bold mb-3">AI Nutrient Scoring</h3>
-              <p class="text-secondary/70 text-sm leading-relaxed">
+            <div class="feature-card reveal">
+              <div class="feature-icon icon-green">🥗</div>
+              <h3>AI Nutrient Scoring</h3>
+              <p>
                 Our vision model calculates calories, protein, carbs, healthy fats, and greens. Healthy meals yield Grade A nutrition, increasing combat power and pet evolution speed.
               </p>
             </div>
 
-            <div class="bg-darkCard p-8 rounded-2xl border border-primary/15 hover:border-primary/40 transition-all">
-              <div class="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center text-accent text-2xl mb-6">
-                ❤️‍🩹
-              </div>
-              <h3 class="text-xl font-bold mb-3">Vitals Decay & Revives</h3>
-              <p class="text-secondary/70 text-sm leading-relaxed">
+            <div class="feature-card reveal">
+              <div class="feature-icon icon-purple">❤️‍🩹</div>
+              <h3>Vitals Decay & Revives</h3>
+              <p>
                 Vitals decay hourly. Neglect your pet and health drops to 0. If it faints, revive it using shielded ZEC to bring it back to fighting form.
               </p>
             </div>
@@ -284,68 +1131,66 @@
       </section>
 
       <!-- Real-Time Battle Arena Section -->
-      <section class="py-24 bg-dark" id="battle">
-        <div class="container mx-auto px-4 md:px-12">
-          <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <span class="text-xs uppercase px-3 py-1 rounded-full bg-accent/20 border border-accent/40 text-accent font-bold tracking-widest">
-                Server-Authoritative Arena
-              </span>
-              <h2 class="text-3xl md:text-5xl font-bold gradient-gold mt-3">Tactical Turn Duels with Blind Locks</h2>
-              <p class="text-secondary/70 mt-4 leading-relaxed">
+      <section id="battle">
+        <div class="container">
+          <div class="grid-2">
+            <div class="reveal">
+              <span class="section-label" style="border-color: rgba(139, 92, 246, 0.3); color: var(--purple);">Server-Authoritative Arena</span>
+              <h2 style="color: var(--gold); margin-bottom: 14px;">Tactical Turn Duels with Blind Locks</h2>
+              <p style="margin-bottom: 0;">
                 Enter the live lobby, invite online players, or join bracket tournaments. Every battle uses secret simultaneous turn execution:
               </p>
 
-              <div class="space-y-4 mt-6">
-                <div class="flex items-start gap-4 p-4 rounded-xl bg-darkCard border border-white/5">
-                  <div class="text-2xl">⚔️</div>
+              <div class="battle-info-list">
+                <div class="battle-info-item">
+                  <span class="bi-icon">⚔️</span>
                   <div>
-                    <h4 class="font-bold text-secondary">Rock-Paper-Scissors Mind Games</h4>
-                    <p class="text-xs text-secondary/60">Strike beats Charge. Guard blocks Strike. Break shatters Guard. Outsmart your rival within the 15-second timer.</p>
+                    <h4>Rock-Paper-Scissors Mind Games</h4>
+                    <p>Strike beats Charge. Guard blocks Strike. Break shatters Guard. Outsmart your rival within the 15-second timer.</p>
                   </div>
                 </div>
 
-                <div class="flex items-start gap-4 p-4 rounded-xl bg-darkCard border border-white/5">
-                  <div class="text-2xl">🔥</div>
+                <div class="battle-info-item">
+                  <span class="bi-icon">🔥</span>
                   <div>
-                    <h4 class="font-bold text-secondary">Elemental Secret Loadouts</h4>
-                    <p class="text-xs text-secondary/60">Equip fireballs, ice shards, vine leeches, and arcane shields. Your abilities remain hidden until cast.</p>
+                    <h4>Elemental Secret Loadouts</h4>
+                    <p>Equip fireballs, ice shards, vine leeches, and arcane shields. Your abilities remain hidden until cast.</p>
                   </div>
                 </div>
 
-                <div class="flex items-start gap-4 p-4 rounded-xl bg-darkCard border border-white/5">
-                  <div class="text-2xl">🎙️</div>
+                <div class="battle-info-item">
+                  <span class="bi-icon">🎙️</span>
                   <div>
-                    <h4 class="font-bold text-secondary">Arcade Announcer Callouts</h4>
-                    <p class="text-xs text-secondary/60">Retro fighting soundscapes: ROUND 1, FIGHT, FINISH THEM, K.O., FLAWLESS VICTORY.</p>
+                    <h4>Arcade Announcer Callouts</h4>
+                    <p>Retro fighting soundscapes: ROUND 1, FIGHT, FINISH THEM, K.O., FLAWLESS VICTORY.</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Arena graphic container -->
-            <div class="bg-gradient-to-br from-darkCard to-[#1E1438] p-8 rounded-3xl border border-primary/20 text-center">
-              <div class="flex justify-around items-center mb-8">
-                <div>
-                  <div class="text-5xl mb-2">🐰</div>
-                  <div class="font-display font-bold text-sm text-primary">YOU</div>
-                  <div class="text-xs text-secondary/60">HP 100/100</div>
+            <!-- Arena Graphic -->
+            <div class="reveal">
+              <div class="arena-graphic">
+                <div class="arena-fighters">
+                  <div class="arena-fighter">
+                    <span class="af-emoji">🐰</span>
+                    <div class="af-name">YOU</div>
+                    <div class="af-hp">HP 100/100</div>
+                  </div>
+                  <div class="arena-vs">VS</div>
+                  <div class="arena-fighter">
+                    <span class="af-emoji">🦊</span>
+                    <div class="af-name" style="color: var(--cream-muted);">OPPONENT</div>
+                    <div class="af-hp">HP 78/100</div>
+                  </div>
                 </div>
-                <div class="font-display text-3xl font-bold text-redVital animate-pulse">VS</div>
-                <div>
-                  <div class="text-5xl mb-2">🦊</div>
-                  <div class="font-display font-bold text-sm text-secondary/80">OPPONENT</div>
-                  <div class="text-xs text-secondary/60">HP 78/100</div>
+                <div class="arena-timer">ROUND 2 · SELECT MOVE (00:09)</div>
+                <div class="arena-moves">
+                  <div class="arena-move move-strike">STRIKE</div>
+                  <div class="arena-move move-guard">GUARD</div>
+                  <div class="arena-move move-break">BREAK</div>
+                  <div class="arena-move move-charge">CHARGE</div>
                 </div>
-              </div>
-              <div class="p-4 rounded-xl bg-dark/90 border border-primary/20 font-display text-xs text-primary mb-4">
-                ROUND 2 · SELECT MOVE (00:09)
-              </div>
-              <div class="grid grid-cols-4 gap-2 text-xs font-bold">
-                <div class="p-2.5 rounded-lg bg-orange-600/30 border border-orange-500/40 text-orange-400">STRIKE</div>
-                <div class="p-2.5 rounded-lg bg-blue-600/30 border border-blue-500/40 text-blue-400">GUARD</div>
-                <div class="p-2.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-400">BREAK</div>
-                <div class="p-2.5 rounded-lg bg-amber-600/30 border border-amber-500/40 text-amber-400">CHARGE</div>
               </div>
             </div>
           </div>
@@ -353,39 +1198,37 @@
       </section>
 
       <!-- Zcash & Privacy Section -->
-      <section class="py-24 bg-darkCard/50 border-t border-primary/10" id="zcash">
-        <div class="container mx-auto px-4 md:px-12">
-          <div class="text-center max-w-2xl mx-auto mb-16">
-            <span class="text-xs uppercase px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary font-bold tracking-widest">
-              Financial Sovereignty
-            </span>
-            <h2 class="text-3xl md:text-5xl font-bold gradient-gold mt-3">Built on Zcash Principles</h2>
-            <p class="text-secondary/70 mt-4 text-base">
+      <section class="section-alt" id="zcash">
+        <div class="container">
+          <div class="section-header reveal">
+            <span class="section-label">Financial Sovereignty</span>
+            <h2>Built on Zcash Principles</h2>
+            <p>
               No tracking pixels. No required phone numbers. No invasive KYC. BiteBuddy was designed from day one around financial privacy.
             </p>
           </div>
 
-          <div class="grid md:grid-cols-3 gap-8">
-            <div class="p-8 rounded-2xl bg-dark border border-white/5">
-              <div class="text-3xl text-primary mb-4"><i class="ri-key-2-fill"></i></div>
-              <h3 class="text-xl font-bold mb-2">12-Word Seed Phrase Login</h3>
-              <p class="text-secondary/70 text-sm">
+          <div class="grid-3">
+            <div class="privacy-card reveal">
+              <span class="pc-icon"><i class="ri-key-2-fill"></i></span>
+              <h3>12-Word Seed Phrase Login</h3>
+              <p>
                 Your account is cryptographically derived via BIP-39 & Ed25519. You own your identity directly without relying on big-tech federated logins.
               </p>
             </div>
 
-            <div class="p-8 rounded-2xl bg-dark border border-white/5">
-              <div class="text-3xl text-primary mb-4"><i class="ri-shield-fill"></i></div>
-              <h3 class="text-xl font-bold mb-2">Shielded Lobby Mode</h3>
-              <p class="text-secondary/70 text-sm">
+            <div class="privacy-card reveal">
+              <span class="pc-icon"><i class="ri-shield-fill"></i></span>
+              <h3>Shielded Lobby Mode</h3>
+              <p>
                 Toggle "Shielded Mode" in settings to mask your username, rating, and buddy appearance on public leaderboards and open match lobbies.
               </p>
             </div>
 
-            <div class="p-8 rounded-2xl bg-dark border border-white/5">
-              <div class="text-3xl text-primary mb-4"><i class="ri-qr-code-line"></i></div>
-              <h3 class="text-xl font-bold mb-2">Direct Shielded ZEC & PetraPay</h3>
-              <p class="text-secondary/70 text-sm">
+            <div class="privacy-card reveal">
+              <span class="pc-icon"><i class="ri-qr-code-line"></i></span>
+              <h3>Direct Shielded ZEC & PetraPay</h3>
+              <p>
                 Pay directly with shielded ZEC via ZIP-321 QR memos or seamless PetraPay checkouts for custom pet skins, tournament passes, and revives.
               </p>
             </div>
@@ -394,16 +1237,17 @@
       </section>
 
       <!-- Roadmap Section -->
-      <section class="py-24 bg-dark" id="roadmap">
-        <div class="container mx-auto px-4 md:px-12">
-          <h2 class="text-3xl md:text-5xl font-bold text-center gradient-gold mb-16">
-            Project Roadmap
-          </h2>
-          <div class="grid md:grid-cols-3 gap-8">
-            <div class="p-6 rounded-2xl bg-darkCard border border-primary/20">
-              <span class="text-xs text-primary font-bold px-2.5 py-1 rounded-full bg-primary/10">PHASE 1 · COMPLETED</span>
-              <h3 class="text-xl font-bold text-secondary mt-4 mb-2">MVP & Core Mechanics</h3>
-              <ul class="text-sm text-secondary/70 space-y-2">
+      <section id="roadmap">
+        <div class="container">
+          <div class="section-header reveal">
+            <h2>Project Roadmap</h2>
+          </div>
+
+          <div class="grid-3">
+            <div class="roadmap-card reveal">
+              <span class="roadmap-phase phase-done">Phase 1 · Completed</span>
+              <h3>MVP & Core Mechanics</h3>
+              <ul>
                 <li>✓ AI vision meal recognition</li>
                 <li>✓ Health/Energy/Satiety decay loop</li>
                 <li>✓ Local meal window notifications</li>
@@ -411,10 +1255,10 @@
               </ul>
             </div>
 
-            <div class="p-6 rounded-2xl bg-darkCard border border-primary/40 shadow-lg shadow-primary/10">
-              <span class="text-xs text-greenVital font-bold px-2.5 py-1 rounded-full bg-greenVital/10">PHASE 2 · CURRENT</span>
-              <h3 class="text-xl font-bold text-secondary mt-4 mb-2">PvP Arena & Zcash Shop</h3>
-              <ul class="text-sm text-secondary/70 space-y-2">
+            <div class="roadmap-card active reveal">
+              <span class="roadmap-phase phase-current">Phase 2 · Current</span>
+              <h3>PvP Arena & Zcash Shop</h3>
+              <ul>
                 <li>✓ Real-time Socket.io PvP duel engine</li>
                 <li>✓ Bracket tournaments & leaderboards</li>
                 <li>✓ Shielded ZEC & PetraPay checkout</li>
@@ -422,10 +1266,10 @@
               </ul>
             </div>
 
-            <div class="p-6 rounded-2xl bg-darkCard border border-white/5">
-              <span class="text-xs text-secondary/40 font-bold px-2.5 py-1 rounded-full bg-white/5">PHASE 3 · FUTURE</span>
-              <h3 class="text-xl font-bold text-secondary mt-4 mb-2">Guilds & World Bosses</h3>
-              <ul class="text-sm text-secondary/70 space-y-2">
+            <div class="roadmap-card reveal">
+              <span class="roadmap-phase phase-future">Phase 3 · Future</span>
+              <h3>Guilds & World Bosses</h3>
+              <ul>
                 <li>• Co-op World Boss food raids</li>
                 <li>• Clan leagues with shielded prize pools</li>
                 <li>• Apple Watch & widget companion apps</li>
@@ -437,26 +1281,18 @@
       </section>
 
       <!-- CTA / Download Section -->
-      <section class="py-24 bg-gradient-to-b from-darkCard to-dark border-t border-primary/10" id="download">
-        <div class="container mx-auto px-4 md:px-12 text-center max-w-3xl">
-          <h2 class="text-4xl md:text-5xl font-bold gradient-gold mb-6">Ready to Enter the Arena?</h2>
-          <p class="text-lg text-secondary/80 mb-8 leading-relaxed">
+      <section class="section-alt cta-section" id="download">
+        <div class="container">
+          <h2 class="reveal">Ready to Enter the Arena?</h2>
+          <p class="reveal">
             Download BiteBuddy today, generate your private seed phrase, and turn every healthy bite into battlefield strength.
           </p>
-          <div class="flex flex-wrap justify-center gap-4">
-            <a
-              href="https://testflight.apple.com"
-              target="_blank"
-              class="bg-primary text-dark font-display font-bold px-8 py-4 !rounded-button text-sm tracking-wider hover:bg-primaryHover transition-all inline-flex items-center gap-2"
-            >
-              <i class="ri-apple-fill text-xl"></i> Download for iOS
+          <div class="cta-actions reveal">
+            <a href="https://testflight.apple.com" target="_blank" class="btn btn-gold">
+              <i class="ri-apple-fill" style="font-size: 1.1rem;"></i> Download for iOS
             </a>
-            <a
-              href="https://github.com"
-              target="_blank"
-              class="border border-white/20 text-secondary px-8 py-4 !rounded-button text-sm font-bold hover:bg-white/5 transition-all inline-flex items-center gap-2"
-            >
-              <i class="ri-github-fill text-xl"></i> View on GitHub
+            <a href="https://github.com" target="_blank" class="btn btn-ghost">
+              <i class="ri-github-fill" style="font-size: 1.1rem;"></i> View on GitHub
             </a>
           </div>
         </div>
@@ -464,47 +1300,84 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark border-t border-primary/10 py-12 text-sm">
-      <div class="container mx-auto px-4 md:px-12">
-        <div class="grid md:grid-cols-4 gap-8 mb-8">
-          <div>
-            <div class="text-xl font-display font-bold gradient-gold mb-2">BiteBuddy</div>
-            <p class="text-secondary/60 text-xs leading-relaxed">
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="fb-name">BiteBuddy</div>
+            <p>
               Real-time multiplayer pet battler powered by real meal nutrition and private Zcash payments.
             </p>
           </div>
-          <div>
-            <h4 class="font-bold text-secondary mb-3">Game</h4>
-            <ul class="space-y-2 text-xs text-secondary/60">
-              <li><a href="#about" class="hover:text-primary">About</a></li>
-              <li><a href="#meal-loop" class="hover:text-primary">Meal Nutrition</a></li>
-              <li><a href="#battle" class="hover:text-primary">PvP Arena</a></li>
-              <li><a href="#zcash" class="hover:text-primary">Zcash Economy</a></li>
+
+          <div class="footer-col">
+            <h4>Game</h4>
+            <ul>
+              <li><a href="#about">About</a></li>
+              <li><a href="#meal-loop">Meal Nutrition</a></li>
+              <li><a href="#battle">PvP Arena</a></li>
+              <li><a href="#zcash">Zcash Economy</a></li>
             </ul>
           </div>
-          <div>
-            <h4 class="font-bold text-secondary mb-3">Legal & Privacy</h4>
-            <ul class="space-y-2 text-xs text-secondary/60">
-              <li><a href="./privacy.html" class="hover:text-primary font-bold text-primary">Privacy Policy</a></li>
-              <li><a href="./privacy.html#account-deletion" class="hover:text-primary">Account Deletion</a></li>
+
+          <div class="footer-col">
+            <h4>Legal & Privacy</h4>
+            <ul>
+              <li><a href="./privacy.html" style="color: var(--gold); font-weight: 700;">Privacy Policy</a></li>
+              <li><a href="./privacy.html#account-deletion">Account Deletion</a></li>
             </ul>
           </div>
-          <div>
-            <h4 class="font-bold text-secondary mb-3">Community</h4>
-            <div class="flex gap-3">
-              <a href="https://x.com/bitebuddy_hq" target="_blank" class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary/20">
+
+          <div class="footer-col">
+            <h4>Community</h4>
+            <div class="footer-social">
+              <a href="https://x.com/bitebuddy_hq" target="_blank" aria-label="Twitter / X">
                 <i class="ri-twitter-x-line"></i>
               </a>
-              <a href="https://t.me/+ydfs0mXoZ2M3MzU0" target="_blank" class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary/20">
+              <a href="https://t.me/+ydfs0mXoZ2M3MzU0" target="_blank" aria-label="Telegram">
                 <i class="ri-telegram-line"></i>
               </a>
             </div>
           </div>
         </div>
-        <div class="pt-8 border-t border-white/5 text-center text-xs text-secondary/40">
+
+        <div class="footer-bottom">
           © 2026 BiteBuddy · Shielded Arena. All rights reserved.
         </div>
       </div>
     </footer>
+
+    <script>
+      // Show header CTA on desktop
+      const headerCTA = document.getElementById('header-cta');
+      if (window.innerWidth >= 768) headerCTA.style.display = 'inline-flex';
+
+      // Mobile menu
+      const mobileMenu = document.getElementById('mobile-menu');
+      document.getElementById('menu-open').addEventListener('click', () => {
+        mobileMenu.classList.add('open');
+      });
+      document.getElementById('menu-close').addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+      });
+      function closeMobileMenu() {
+        mobileMenu.classList.remove('open');
+      }
+
+      // Scroll reveal
+      const revealEls = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+      revealEls.forEach((el) => observer.observe(el));
+    </script>
   </body>
 </html>
